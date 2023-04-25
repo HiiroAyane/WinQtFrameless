@@ -1,0 +1,14 @@
+TitleBar {
+    /* background-color:qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #F8F8F8 stop:1 #DDDDE5); */
+    background-color: #C4B7D7;
+}
+
+TitleBar QPushButton {
+    border:none;
+    background-color: transparent;
+}
+
+TitleBar QPushButton:hover {
+    border:none;
+    background-color: red;
+}
