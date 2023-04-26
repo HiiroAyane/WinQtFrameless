@@ -7,7 +7,7 @@
 template <typename T>
 class WinQt : public T {
 public:
-	explicit WinQt(QWidget* parent = nullptr) {
+	explicit WinQt(QWidget* parent = nullptr):T(parent) {
 		m_vLayout = new QVBoxLayout(this);
 		m_vLayout->setContentsMargins(0, 0, 0, 0);
 		m_vLayout->setSpacing(0);
