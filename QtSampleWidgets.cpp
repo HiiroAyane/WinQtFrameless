@@ -21,5 +21,5 @@ void QtWidgets::mouseDoubleClickEvent(QMouseEvent* e)
     d->resize(400, 300);
 
     d->exec();  // 模态测试  model dialog test
-    //d->show();// 非模态测试 modeless dialog test
+    d->show();// 非模态测试 modeless dialog test
 }
