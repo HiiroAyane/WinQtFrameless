@@ -25,7 +25,24 @@ public:
 	void resize(const QSize& size) {
 		return resize(size.width(), size.height());
 	}
-
+	void setFixedSize(const QSize& size) {
+		m_wFixed = true;
+		m_hFixed = true;
+		return __super::setFixedsize(size);
+	}
+	void setFixedSize(int w, int h) {
+		m_wFixed = true;
+		m_hFixed = true;
+		return __super::setFixedsize(w, h);
+	}
+	void setFixedWidth(int w) {
+		m_wFixed = true;
+		return __super::setFixedWidth(w);
+	}
+	void setFixedHeight(int h) {
+		m_hFixed = true;
+		return __super::setFixedHeight(h);
+	}
 protected:
 	void paintEvent(QPaintEvent* e) override {
 		QStyleOption opt;
@@ -43,7 +60,7 @@ protected:
 		case WM_ACTIVATE:
 			return nativeEvtProcess_WM_ACTIVATE(pMsg, result);
 		case WM_NCHITTEST:
-			return nativeEvtProcess_WM_NCHITTEST(pMsg, m_titleBar, result, m_outOfScreen);
+			return nativeEvtProcess_WM_NCHITTEST(pMsg, m_titleBar, result, m_wFixed, m_hFixed, m_outOfScreen);
 		case WM_MOVE:
 			if (m_firstShow) {
 				nativeEvtProcess_WM_MOVE(pMsg->hwnd, width(), height());
@@ -60,4 +77,6 @@ protected:
 	int          m_outOfScreen = 0;
 private:
 	bool         m_firstShow = true;
+	bool         m_wFixed = false;
+	bool         m_hFixed = false;
 };
