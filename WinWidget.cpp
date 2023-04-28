@@ -24,8 +24,9 @@ bool WinWindow::nativeEvent(const QByteArray& eventType, void* message, long* re
 
 		bool isMax = false;
 		if (wp.showCmd == SW_MAXIMIZE) {
-			// 最大化时避免内容超出显示器（原因是客户区覆盖了非客户区，导致最大化时有部分原非客户区的内容（现客户区）被放置到了屏幕外）
-			// 暂无完美的解决办法
+			// 最大化时避免内容超出显示器
+			// Windows的某种Future 带边框的原生窗口最大化也会标题栏变窄
+			// 暂无完美的解决办法 也可以注释掉不解决
 			if (devicePixelRatio() == 1) m_outOfScreen = 8; // 数值根据缩放倍率需要微调，此为缩放100%， 125%的值
 			else if (devicePixelRatio() == 2) {
 				m_outOfScreen = 5; // 此为150%，175%的值

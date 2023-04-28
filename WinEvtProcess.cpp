@@ -5,6 +5,12 @@
 #include <dwmapi.h>
 #pragma comment(lib, "dwmapi.lib")
 
+const LRESULT hitAction[3][3] =
+{
+	{ HTTOPLEFT,    HTTOP,         HTTOPRIGHT },
+	{ HTLEFT,       HTNOWHERE,     HTRIGHT },
+	{ HTBOTTOMLEFT, HTBOTTOM,      HTBOTTOMRIGHT },
+};
 
 bool nativeEvtProcess_WM_NCCALCSIZE(long* result)
 {
@@ -23,7 +29,7 @@ bool nativeEvtProcess_WM_ACTIVATE(MSG* pMsg, long* result)
 	return true;
 }
 
-bool nativeEvtProcess_WM_NCHITTEST(MSG* pMsg, QWidget* titleBar, long* result, int outOfScreen)
+bool nativeEvtProcess_WM_NCHITTEST(MSG* pMsg, QWidget* titleBar, long* result, bool wFixed, bool hFixed, int outOfScreen)
 {
 	// 模糊边界宽度
 	int bound = 5;
@@ -40,12 +46,6 @@ bool nativeEvtProcess_WM_NCHITTEST(MSG* pMsg, QWidget* titleBar, long* result, i
 	// 动作
 	USHORT uRow = 1;
 	USHORT uCol = 1;
-	LRESULT hitAction[3][3] =
-	{
-		{ HTTOPLEFT,    HTTOP,         HTTOPRIGHT },
-		{ HTLEFT,       HTNOWHERE,     HTRIGHT },
-		{ HTBOTTOMLEFT, HTBOTTOM,      HTBOTTOMRIGHT },
-	};
 
 	// 检测是不是在标题栏上
 	if (ptMouse.x >= rcWindow.left + bound && ptMouse.x <= rcWindow.right - bound && ptMouse.y > rcWindow.top + bound && ptMouse.y <= rcWindow.top + titleBarHeight + outOfScreen)
@@ -59,22 +59,27 @@ bool nativeEvtProcess_WM_NCHITTEST(MSG* pMsg, QWidget* titleBar, long* result, i
 		return true;
 	}
 	// 确认鼠标指针是否在top或者bottom
-	if (ptMouse.y >= rcWindow.top - bound && ptMouse.y < rcWindow.top + bound)
-	{
-		uRow = 0;
+	if (!hFixed) {
+		if (ptMouse.y >= rcWindow.top - bound && ptMouse.y < rcWindow.top + bound)
+		{
+			uRow = 0;
+		}
+		else if (ptMouse.y < rcWindow.bottom + bound && ptMouse.y >= rcWindow.bottom - bound)
+		{
+			uRow = 2;
+		}
 	}
-	else if (ptMouse.y < rcWindow.bottom + bound && ptMouse.y >= rcWindow.bottom - bound)
-	{
-		uRow = 2;
-	}
+
 	// 确认鼠标指针是否在left或者right
-	if (ptMouse.x >= rcWindow.left - bound && ptMouse.x < rcWindow.left + bound)
-	{
-		uCol = 0;
-	}
-	else if (ptMouse.x < rcWindow.right + bound && ptMouse.x >= rcWindow.right - bound)
-	{
-		uCol = 2;
+	if (!wFixed) {
+		if (ptMouse.x >= rcWindow.left - bound && ptMouse.x < rcWindow.left + bound)
+		{
+			uCol = 0;
+		}
+		else if (ptMouse.x < rcWindow.right + bound && ptMouse.x >= rcWindow.right - bound)
+		{
+			uCol = 2;
+		}
 	}
 
 	if (uRow == 1 && uCol == 1) return false;
