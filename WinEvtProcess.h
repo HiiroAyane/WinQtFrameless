@@ -1,5 +1,5 @@
 #pragma once
-#include <Windows.h>
+#include <windows.h>
 #include <QWidget>
 
 bool nativeEvtProcess_WM_NCCALCSIZE(long* result);

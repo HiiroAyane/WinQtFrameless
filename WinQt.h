@@ -62,10 +62,15 @@ protected:
 		case WM_NCHITTEST:
 			return nativeEvtProcess_WM_NCHITTEST(pMsg, m_titleBar, result, m_wFixed, m_hFixed, m_outOfScreen);
 		case WM_MOVE:
+			// 多显示器窗口创建时避免尺寸错误
 			if (m_firstShow) {
 				nativeEvtProcess_WM_MOVE(pMsg->hwnd, width(), height());
 				m_firstShow = false;
 			}
+			break;
+		case WM_MOVING:
+			// 多显示器间移动时避免尺寸错误
+			nativeEvtProcess_WM_MOVE(pMsg->hwnd, width(), height());
 			break;
 		}
 
