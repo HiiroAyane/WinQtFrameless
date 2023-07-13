@@ -8,6 +8,7 @@ template <typename T>
 class WinQt : public T {
 public:
 	explicit WinQt(QWidget* parent = nullptr):T(parent) {
+		setAttribute(Qt::WA_StyledBackground);
 		m_vLayout = new QVBoxLayout(this);
 		m_vLayout->setContentsMargins(0, 0, 0, 0);
 		m_vLayout->setSpacing(0);
@@ -44,13 +45,6 @@ public:
 		return __super::setFixedHeight(h);
 	}
 protected:
-	void paintEvent(QPaintEvent* e) override {
-		QStyleOption opt;
-		opt.init(this);
-		QPainter p(this);
-		return style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-	}
-
 	bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
 		MSG* pMsg = reinterpret_cast<MSG*>(message);
 
@@ -64,8 +58,7 @@ protected:
 		case WM_MOVE:
 			// 多显示器窗口创建时避免尺寸错误
 			if (m_firstShow) {
-				nativeEvtProcess_WM_MOVE(pMsg->hwnd, width(), height());
-				m_firstShow = false;
+				QMetaObject::invokeMethod(this, [this] { nativeEvtProcess_WM_MOVE((HWND)winId(), width(), height()); m_firstShow = false; }, Qt::QueuedConnection);
 			}
 			break;
 		case WM_MOVING:

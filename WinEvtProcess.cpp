@@ -48,7 +48,7 @@ bool nativeEvtProcess_WM_NCHITTEST(MSG* pMsg, QWidget* titleBar, long* result, b
 	USHORT uCol = 1;
 
 	// 检测是不是在标题栏上
-	if (ptMouse.x >= rcWindow.left + bound && ptMouse.x <= rcWindow.right - bound && ptMouse.y > rcWindow.top + bound && ptMouse.y <= rcWindow.top + titleBarHeight + outOfScreen)
+	if (ptMouse.x >= rcWindow.left + (wFixed ? 0 : bound) && ptMouse.x <= rcWindow.right - (wFixed ? 0 : bound) && ptMouse.y > rcWindow.top + (hFixed ? 0 : bound) && ptMouse.y <= rcWindow.top + titleBarHeight + outOfScreen)
 	{
 		// 检测是否落在标题栏本身，而不是其子部件上
 		QWidget* w = QApplication::widgetAt(QCursor::pos());
