@@ -1,6 +1,8 @@
 #pragma once
 #include "WinWidget.h"
+#include <QStyle>
 #include <QPushButton>
+#include <QApplication>
 
 /// <summary>
 /// 标题栏用例 titlebar sample
@@ -10,24 +12,18 @@ class TitleBar : public QWidget {
 public:
 	TitleBar(QWidget* parent) :QWidget(parent) { 
 		setFixedHeight(30);
+		setAttribute(Qt::WA_StyledBackground);
 
 		auto layout = new QHBoxLayout(this);
 		layout->setContentsMargins(0, 0, 0, 0);
 		layout->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 		
 		auto closeBtn = new QPushButton(this);
-		closeBtn->setIcon(QIcon(":/QtWidgets/close.png"));
+		closeBtn->setIcon(QIcon(qApp->style()->standardIcon(QStyle::SP_TitleBarCloseButton)));
 		closeBtn->setFixedSize(30, 30);
 		connect(closeBtn, &QPushButton::clicked, parentWidget(), &QWidget::close);
 
 		layout->addWidget(closeBtn);
-	}
-protected:
-	void paintEvent(QPaintEvent* e) override {
-		QStyleOption opt;
-		opt.init(this);
-		QPainter p(this);
-		style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 	}
 };
 

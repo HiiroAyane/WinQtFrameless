@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/QtWidgets">
         <file>QtWidget.qss</file>
-        <file>close.png</file>
     </qresource>
 </RCC>
