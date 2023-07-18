@@ -58,7 +58,8 @@ protected:
 		case WM_MOVE:
 			// 多显示器窗口创建时避免尺寸错误
 			if (m_firstShow) {
-				QMetaObject::invokeMethod(this, [this] { nativeEvtProcess_WM_MOVE((HWND)winId(), width(), height()); m_firstShow = false; }, Qt::QueuedConnection);
+				m_firstShow = false;
+				QMetaObject::invokeMethod(this, [this] { nativeEvtProcess_WM_MOVE((HWND)winId(), width(), height()); resize(width(), height()); }, Qt::QueuedConnection);
 			}
 			break;
 		case WM_MOVING:
