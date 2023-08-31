@@ -29,12 +29,12 @@ public:
 	void setFixedSize(const QSize& size) {
 		m_wFixed = true;
 		m_hFixed = true;
-		return __super::setFixedsize(size);
+		return __super::setFixedSize(size);
 	}
 	void setFixedSize(int w, int h) {
 		m_wFixed = true;
 		m_hFixed = true;
-		return __super::setFixedsize(w, h);
+		return __super::setFixedSize(w, h);
 	}
 	void setFixedWidth(int w) {
 		m_wFixed = true;
